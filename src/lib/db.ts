@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== "production") {
 
 export async function ensureSqlitePragmas() {
   try {
-    await prisma.$executeRawUnsafe("PRAGMA journal_mode = WAL;");
+    await prisma.$queryRawUnsafe("PRAGMA journal_mode = WAL;");
     await prisma.$executeRawUnsafe("PRAGMA foreign_keys = ON;");
   } catch {
     // SQLite pragmas are best-effort during health checks and early startup.
