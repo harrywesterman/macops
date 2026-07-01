@@ -1,0 +1,16 @@
+services:
+  macops:
+    build: .
+    ports:
+      - "8080:3000"
+    environment:
+      APP_BASE_URL: http://localhost:8080
+      DATABASE_URL: file:/data/macops.sqlite
+      SESSION_SECRET: change-this-before-any-shared-environment
+      AUTH_MOCK_ENABLED: "true"
+      INTEGRATION_MODE: mock
+    volumes:
+      - macops-data:/data
+
+volumes:
+  macops-data:

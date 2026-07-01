@@ -1,0 +1,53 @@
+{
+  "name": "macops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npm run prisma:deploy && playwright test",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "node scripts/bootstrap-db.mjs",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "seed": "tsx prisma/seed.ts",
+    "docker:build": "docker build -t macops:local .",
+    "docker:run": "docker run --rm -p 8080:3000 -v macops-data:/data --env-file .env.local -e APP_BASE_URL=http://localhost:8080 macops:local"
+  },
+  "dependencies": {
+    "@node-saml/node-saml": "5.1.0",
+    "@prisma/client": "^6.19.3",
+    "jose": "6.2.3",
+    "lucide-react": "0.562.0",
+    "next": "^16.2.10",
+    "prisma": "^6.19.3",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zod": "4.1.9"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.3.3",
+    "@playwright/test": "1.61.1",
+    "@tailwindcss/postcss": "4.1.18",
+    "@types/node": "26.0.0",
+    "@types/react": "19.2.8",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-next": "^16.2.10",
+    "postcss": "8.5.10",
+    "tailwindcss": "4.1.18",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.9"
+  },
+  "overrides": {
+    "esbuild": "0.28.1",
+    "postcss": "8.5.10"
+  }
+}

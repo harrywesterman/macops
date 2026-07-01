@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model DeviceCache {
+  serial               String    @id
+  model                String?
+  abmStatus            String    @default("UNKNOWN")
+  currentMdmServerKey  String?
+  currentMdmServerName String?
+  assignedServerId     String?
+  jamfStatus           String    @default("UNKNOWN")
+  currentPrestageKey   String?
+  currentPrestageName  String?
+  lastSyncedAt         DateTime?
+  rawJson              String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model MdmServerMap {
+  key           String   @id
+  displayName   String
+  appleServerId String?
+  isAssignable  Boolean  @default(true)
+  isJamf        Boolean  @default(false)
+  updatedAt     DateTime @updatedAt
+}
+
+model JamfPrestageMap {
+  key         String   @id
+  displayName String
+  jamfId      String?
+  versionLock Int      @default(0)
+  active      Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+}
+
+model Mutation {
+  id                 String    @id @default(cuid())
+  type               String
+  serial             String
+  status             String
+  requestedByEmail   String
+  requestedByName    String?
+  targetKey          String
+  targetLabel        String
+  externalActivityId String?
+  result             String?
+  auditId            String?
+  createdAt          DateTime  @default(now())
+  completedAt        DateTime?
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  action      String
+  serial      String?
+  actorEmail  String
+  actorName   String?
+  groupNames  String?
+  targetKey   String?
+  targetLabel String?
+  status      String
+  details     String?
+  createdAt   DateTime @default(now())
+}
+
+model IntegrationHealth {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  status        String
+  message       String?
+  lastCheckedAt DateTime @default(now())
+}
+
+model UserSession {
+  id        String   @id
+  email     String
+  name      String?
+  groups    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuthState {
+  id         String   @id @default(cuid())
+  relayState String   @unique
+  returnTo   String?
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+}
