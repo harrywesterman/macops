@@ -15,13 +15,13 @@ Open daarna [http://localhost:3000](http://localhost:3000). De lokale `.env` geb
 
 ## Docker
 
-De container luistert intern op poort `3000`, maar de meegeleverde Compose-configuratie publiceert de app standaard op hostpoort `8080`.
+De container luistert intern op poort `3000`, maar de meegeleverde Compose-configuratie publiceert de app standaard op hostpoort `7034`.
 
 ```bash
 docker compose -f docker-compose.yaml up --build
 ```
 
-Open daarna [http://localhost:8080](http://localhost:8080).
+Open daarna [http://localhost:7034](http://localhost:7034).
 
 De container draait als non-root user, gebruikt `/data/macops.sqlite` voor persistente opslag en past bij start de Prisma migration SQL idempotent toe.
 
@@ -30,9 +30,9 @@ Losse Docker-run zonder Compose:
 ```bash
 docker build -t macops:local .
 docker run --rm \
-  -p 8080:3000 \
+  -p 7034:3000 \
   -v macops-data:/data \
-  -e APP_BASE_URL=http://localhost:8080 \
+  -e APP_BASE_URL=http://localhost:7034 \
   -e DATABASE_URL=file:/data/macops.sqlite \
   -e SESSION_SECRET=change-this-before-any-shared-environment \
   -e AUTH_MOCK_ENABLED=true \

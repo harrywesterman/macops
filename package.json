@@ -18,7 +18,7 @@
     "prisma:seed": "tsx prisma/seed.ts",
     "seed": "tsx prisma/seed.ts",
     "docker:build": "docker build -t macops:local .",
-    "docker:run": "docker run --rm -p 8080:3000 -v macops-data:/data --env-file .env.local -e APP_BASE_URL=http://localhost:8080 macops:local"
+    "docker:run": "docker run --rm -p 7034:3000 -v macops-data:/data --env-file .env.local -e APP_BASE_URL=http://localhost:7034 macops:local"
   },
   "dependencies": {
     "@node-saml/node-saml": "5.1.0",
