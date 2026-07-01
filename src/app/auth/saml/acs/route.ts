@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSession, setSessionCookie } from "@/lib/auth/session";
 import { consumeRelayState, createSamlClient, profileToUser } from "@/lib/auth/saml";
 import { errorResponse } from "@/lib/http";
+import { publicUrl, safeReturnPath } from "@/lib/public-url";
 
 export const runtime = "nodejs";
 
@@ -13,13 +14,13 @@ export async function POST(request: NextRequest) {
 
     const result = await createSamlClient().validatePostResponseAsync({ SAMLResponse, RelayState });
     if (result.loggedOut || !result.profile) {
-      return NextResponse.redirect(new URL("/auth/logout", request.url));
+      return NextResponse.redirect(publicUrl("/auth/logout", request));
     }
 
     const user = profileToUser(result.profile);
     const session = await createSession(user);
-    const returnTo = await consumeRelayState(RelayState);
-    const response = NextResponse.redirect(new URL(returnTo, request.url));
+    const returnTo = safeReturnPath(await consumeRelayState(RelayState), "/dashboard");
+    const response = NextResponse.redirect(publicUrl(returnTo, request));
     setSessionCookie(response, session.cookieValue, session.expiresAt);
     return response;
   } catch (error) {
